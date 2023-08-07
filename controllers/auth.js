@@ -107,6 +107,7 @@ const resetPassword=asyncHandler(async (req, res, next) => {
     resetPasswordToken:resetPasswordToken,
     resetPasswordExpire:{$gt : Date.now()}
   })
+  
   if(!user){
     return next(new CustomError("Invalid Token or Session Expired",404))
   }
