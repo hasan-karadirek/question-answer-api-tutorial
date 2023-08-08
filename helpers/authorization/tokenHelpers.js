@@ -1,7 +1,7 @@
 const sendJwtToClient=(user,res)=>{
     const {JWT_COOKIE}=process.env
     const token=user.generateJwtFromUser()
-
+    console.log("jwt",new Date(Date.now()+parseInt(JWT_COOKIE)*1000*60))
     return res
     .status(200)
     .cookie("access_token",token,{httpOnly:true,expires:new Date(Date.now()+parseInt(JWT_COOKIE)*1000*60   ),secure:false  })

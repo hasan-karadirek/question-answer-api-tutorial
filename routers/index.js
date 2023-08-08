@@ -5,7 +5,9 @@ const router=express.Router();
 
 const question=require("./question");
 const auth=require("./auth");
-const user=require("./user")
+const admin=require("./admin");
+const user=require("./user");
+router.use("/admin",admin);
 router.use("/question",question);
 router.use("/auth",auth);
 router.use("/users",user)

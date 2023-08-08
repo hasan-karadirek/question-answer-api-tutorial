@@ -16,7 +16,11 @@ const customErrorHandler=(err,req,res,next)=>{
     }
     if(err.name==="CastError"){
         customError=new CustomError("There is no such user with this id!",400)
+    }else{
+        customError=err;
+        customError.status=444
     }
+   
     
     res.status(customError.status||500).json({ 
         success: false,
