@@ -17,8 +17,8 @@ const blockUser = asyncHandler(async (req, res, next) => {
 
 const deleteUser = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
-  const user = await User.findById(id);
-  await user.remove();
+  const user = await User.deleteOne({_id:id})
+
 
   return res
     .status(200)

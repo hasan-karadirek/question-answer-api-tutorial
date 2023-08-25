@@ -87,9 +87,9 @@ UserSchema.pre("save",function(next){
     })
     
 })
-UserSchema.post("remove", async function(){
+UserSchema.pre("deleteOne", async function(){
     await Question.deleteMany({
-        user:this._id
+        user:this._conditions._id
     })
 })
 module.exports =mongoose.model("User",UserSchema);

@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const answer=require("./answer")
 const {
   askNewQuestion,
   getAllQuestions,
@@ -36,4 +37,6 @@ router.delete(
   [getAccessToRoute, checkQuestionExist, getQuestionOwnerAccess],
   deleteQuestion
 );
+
+router.use("/:questionId/answers",checkQuestionExist,answer)
 module.exports = router;

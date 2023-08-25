@@ -1,7 +1,7 @@
 const Question = require('../models/Question');
 const CustomError = require('../helpers/error/CustomError');
 const asyncHandler = require('express-async-handler');
-const question = require('../models/Question');
+
 
 const askNewQuestion = asyncHandler(async (req, res, next) => {
   const { title, content } = req.body;
