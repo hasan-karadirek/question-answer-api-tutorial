@@ -6,6 +6,6 @@ const {blockUser,deleteUser}=require("../controllers/admin")
 
 router.use([getAccessToRoute, getAccessToAdmin])
 router.get("/block/:id",checkUserExist,blockUser)
-router.delete("/user:id",checkUserExist,deleteUser)
+router.delete("/user/:id",checkUserExist,deleteUser)
 
 module.exports=router
