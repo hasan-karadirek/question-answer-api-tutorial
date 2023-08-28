@@ -1,8 +1,6 @@
 const CustomError = require('../../helpers/error/CustomError');
 
 const customErrorHandler = (err, req, res, next) => {
-  console.log(err);
-
   if (err.name === 'ValidationError') {
     customError = new CustomError(err.message, err.status);
   }
@@ -18,14 +16,11 @@ const customErrorHandler = (err, req, res, next) => {
   }
   if (err.name === 'CastError') {
     customError = new CustomError('Please provide a correct id!', 400);
-  } else {
-    customError = err;
-    customError.status = 404;
   }
 
   res.status(customError.status || 500).json({
     success: false,
-    message: customError.name + ' : ' + customError || 'Internal Server Error',
+    message: customError || 'Internal Server Error',
   });
 };
 

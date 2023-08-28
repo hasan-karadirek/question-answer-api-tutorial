@@ -8,7 +8,7 @@ const CustomError = require('../../helpers/error/CustomError');
 const asyncHandler = require('express-async-handler');
 const User = require('../../models/User');
 const Question = require('../../models/Question');
-const Answer=require("../../models/Answer")
+const Answer = require('../../models/Answer');
 
 const getAccessToRoute = (req, res, next) => {
   if (!isTokenIncluded(req)) {
@@ -25,6 +25,7 @@ const getAccessToRoute = (req, res, next) => {
     next();
   });
 };
+
 const getAccessToAdmin = asyncHandler(async (req, res, next) => {
   const { id } = req.user;
   const user = await User.findById(id);
@@ -44,17 +45,19 @@ const getQuestionOwnerAccess = asyncHandler(async (req, res, next) => {
   next();
 });
 
-const getAnswerOwnerAccess=asyncHandler(async (req, res, next) => {
+const getAnswerOwnerAccess = asyncHandler(async (req, res, next) => {
   const { answerId } = req.params;
-  const answer=await Answer.findById(answerId);
-  if(answer.user!=req.user.id) return next(new CustomError("You do not have Authorization to edit this answer",403));
-  return next()
-
-})
+  const answer = await Answer.findById(answerId);
+  if (answer.user != req.user.id)
+    return next(
+      new CustomError('You do not have Authorization to edit this answer', 403)
+    );
+  return next();
+});
 
 module.exports = {
   getAccessToRoute,
   getAccessToAdmin,
   getQuestionOwnerAccess,
-  getAnswerOwnerAccess
+  getAnswerOwnerAccess,
 };

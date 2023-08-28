@@ -10,34 +10,38 @@ const checkUserExist = asyncHandler(async (req, res, next) => {
   const user = await User.findById(id);
 
   if (!user) {
-    return next(new CustomError('There is no such user with this id!', 400));
+    return next(new CustomError('There is no such user with this id!', 404));
   }
-  req.dataUser = user;
+  req.checkedUser = user;
   next();
 });
 
 const checkQuestionExist = asyncHandler(async (req, res, next) => {
-    
-  const  questionId  = req.params.id || req.params.questionId;
+  const questionId = req.params.id || req.params.questionId;
 
   const question = await Question.findById(questionId);
 
   if (!question) {
     return next(
-      new CustomError('There is no such question with this id!', 400)
+      new CustomError('There is no such question with this id!', 404)
     );
   }
 
   next();
 });
 
-const checkAnswerExist=asyncHandler(async (req, res, next) => {
-  const {answerId,questionId}=req.params;
-  const answer=await Answer.findById(answerId);
-  if(!answer || answer.question!=questionId) return next(new CustomError("There is no answer with that id associated with question id",400));
-  
-  return next()
+const checkAnswerExist = asyncHandler(async (req, res, next) => {
+  const { answerId, questionId } = req.params;
+  const answer = await Answer.findById(answerId);
+  if (!answer || answer.question != questionId)
+    return next(
+      new CustomError(
+        'There is no answer with that id associated with question id',
+        404
+      )
+    );
 
-})
+  return next();
+});
 
-module.exports = { checkUserExist, checkQuestionExist,checkAnswerExist };
+module.exports = { checkUserExist, checkQuestionExist, checkAnswerExist };

@@ -1,9 +1,13 @@
-const express=require("express");
-const router=express.Router();
-const {getSingleUser,getAllUsers}=require("../controllers/user")
-const {checkUserExist}=require("../middlewares/database/databaseErrorHelpers")
+const { getSingleUser, getAllUsers } = require('../controllers/user');
+const {
+  checkUserExist,
+} = require('../middlewares/database/databaseErrorHelpers');
+const userQueryMiddleware = require('../middlewares/query/userQueryMiddleware');
+const User = require('../models/User');
+const express = require('express');
+const router = express.Router();
 
-router.get("/:id",checkUserExist,getSingleUser);
-router.get("/",getAllUsers)
+router.get('/:id', checkUserExist, getSingleUser);
+router.get('/', userQueryMiddleware(User), getAllUsers);
 
-module.exports=router; 
+module.exports = router;

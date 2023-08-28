@@ -2,7 +2,6 @@ const Question = require('../models/Question');
 const CustomError = require('../helpers/error/CustomError');
 const asyncHandler = require('express-async-handler');
 
-
 const askNewQuestion = asyncHandler(async (req, res, next) => {
   const { title, content } = req.body;
   const question = await Question.create({
@@ -17,23 +16,11 @@ const askNewQuestion = asyncHandler(async (req, res, next) => {
 });
 
 const getAllQuestions = asyncHandler(async (req, res, next) => {
-  const questions = await Question.find();
-  return res.status(200).json({
-    success: true,
-    questions: questions,
-  });
+  return res.status(200).json(res.queryResults);
 });
 
 const getSingleQuestion = asyncHandler(async (req, res, next) => {
-  const { id } = req.params;
-  const question = await Question.findById(id);
-  if (!question) {
-    next(new CustomError('There is no such a question with this id'), 404);
-  }
-  return res.status(200).json({
-    success: true,
-    question: question,
-  });
+  return res.status(200).json(res.queryResults);
 });
 
 const editQuestion = asyncHandler(async (req, res, next) => {
@@ -66,6 +53,7 @@ const likeQuestion = asyncHandler(async (req, res, next) => {
     return next(new CustomError('You already liked this question', 400));
   }
   question.likes.push(req.user.id);
+  question.likeCount = question.likeCount + 1;
   await question.save();
 
   return res.status(200).json({
@@ -83,8 +71,10 @@ const undoLikeQuestion = asyncHandler(async (req, res, next) => {
       new CustomError('You have not liked before this question', 400)
     );
   }
+
   const index = question.likes.indexOf(req.user.id);
   question.likes.splice(index, 1);
+  question.likeCount = question.likeCount - 1;
   await question.save();
 
   return res.status(200).json({

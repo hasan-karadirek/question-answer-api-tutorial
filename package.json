@@ -5,7 +5,10 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "format": "prettier --write \"**/*.js\"",
+    "import": "node dummy-generator.js --import",
+    "delete": "node dummy-generator.js --delete"
   },
   "keywords": [
     "express"
@@ -25,6 +28,6 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.22",
-    "prettier": "^2.2.1"
+    "prettier": "^3.0.2"
   }
 }
