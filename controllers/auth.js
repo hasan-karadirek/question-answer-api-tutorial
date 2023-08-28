@@ -35,7 +35,7 @@ const login = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({ email }).select('+password');
 
   if (!comparePassword(password, user.password)) {
-    return next(new CustomError('User crediantials'), 400);
+    return next(new CustomError('User crediantials are not correct'), 401);
   }
 
   sendJwtToClient(user, res);
@@ -57,10 +57,10 @@ const logout = asyncHandler(async (req, res, next) => {
 
 const forgotPassword = asyncHandler(async (req, res, next) => {
   const resetEmail = req.body.email;
-  console.log(resetEmail);
+
   const user = await User.findOne({ email: resetEmail });
   if (!user) {
-    return next(new CustomError('Please provide a correct email', 400));
+    return next(new CustomError('Please provide a correct email', 404));
   }
   const resetPasswordToken = user.getResetPasswordTokenFromUser();
 
@@ -72,11 +72,11 @@ const forgotPassword = asyncHandler(async (req, res, next) => {
   <h3>Reset Your Password</h3>
   <p>This <a href=${resetPasswordUrl} target="_blank">link</a> will expire in 1 hour</p>
   `;
-  console.log('hasan calisti la');
+
   try {
     await sendEmail({
-      from: 'hasankaradirek3@gmail.com',
-      to: 'hasankaradirek3@gmail.com',
+      from: process.env.SMTP_USER,
+      to: user.email,
       subject: 'Reset Password',
       html: emailTemplate,
     });
@@ -89,7 +89,7 @@ const forgotPassword = asyncHandler(async (req, res, next) => {
     user.resetPasswordExpire = undefined;
 
     await user.save();
-    console.log(err);
+
     return next(new CustomError('Email could not be sent', 500));
   }
 });
@@ -98,7 +98,12 @@ const resetPassword = asyncHandler(async (req, res, next) => {
   const { resetPasswordToken } = req.query;
   const { password } = req.body;
   if (!resetPasswordToken) {
-    return next(new CustomError('Invalid Token', 400));
+    return next(
+      new CustomError(
+        'Please provide a valid token in your request params',
+        401
+      )
+    );
   }
 
   let user = await User.findOne({
@@ -107,7 +112,7 @@ const resetPassword = asyncHandler(async (req, res, next) => {
   });
 
   if (!user) {
-    return next(new CustomError('Invalid Token or Session Expired', 404));
+    return next(new CustomError('Invalid Token or Session Expired', 401));
   }
 
   user.password = password;

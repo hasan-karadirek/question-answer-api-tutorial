@@ -2,7 +2,6 @@ const Question = require('../models/Question');
 const CustomError = require('../helpers/error/CustomError');
 const asyncHandler = require('express-async-handler');
 
-
 const askNewQuestion = asyncHandler(async (req, res, next) => {
   const { title, content } = req.body;
   const question = await Question.create({
@@ -21,7 +20,6 @@ const getAllQuestions = asyncHandler(async (req, res, next) => {
 });
 
 const getSingleQuestion = asyncHandler(async (req, res, next) => {
-  
   return res.status(200).json(res.queryResults);
 });
 
@@ -55,7 +53,7 @@ const likeQuestion = asyncHandler(async (req, res, next) => {
     return next(new CustomError('You already liked this question', 400));
   }
   question.likes.push(req.user.id);
-  question.likeCount=question.likeCount+1
+  question.likeCount = question.likeCount + 1;
   await question.save();
 
   return res.status(200).json({
@@ -76,7 +74,7 @@ const undoLikeQuestion = asyncHandler(async (req, res, next) => {
 
   const index = question.likes.indexOf(req.user.id);
   question.likes.splice(index, 1);
-  question.likeCount=question.likeCount-1
+  question.likeCount = question.likeCount - 1;
   await question.save();
 
   return res.status(200).json({
