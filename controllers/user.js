@@ -11,10 +11,7 @@ const getSingleUser = asyncHandler(async (req, res, next) => {
 });
 
 const getAllUsers = asyncHandler(async (req, res, next) => {
-  const users = await User.find();
-  return res.status(200).json({
-    success: true,
-    users: users,
-  });
+  
+  return res.status(200).json(res.queryResults);
 });
 module.exports = { getSingleUser, getAllUsers };

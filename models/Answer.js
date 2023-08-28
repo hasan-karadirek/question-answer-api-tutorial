@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const User = require('./User');
 const Question = require('./Question');
 const Schema = mongoose.Schema;
 
@@ -7,7 +6,7 @@ const AnswerSchema=new Schema({
     content:{
         type:String,
         required: [true, 'Please provide a content'],
-        minlength: [20, 'Pleaseprovide a content at least 20 characters']
+        minlength: [20, 'Please provide a content at least 20 characters']
     },
     user:{
         type:mongoose.Schema.ObjectId,
@@ -47,13 +46,11 @@ AnswerSchema.pre("save", async function(next){
 })
 
 AnswerSchema.pre("deleteOne",{ document: true, query: false }, async function(){
-    console.log(this)
-    // const answerId=this.getFilter()
-    // const answer=await Answer.findById(answerId)
-    // console.log("ans",answer)
-    // const question=await Question.findById(this.getFilter()._id);
-    // question.answers.splice(question.answers.indexOf(answer.question),1)
-    // await question.save()
+    
+    const question = await Question.findById(this.question)
+    question.answers.splice(question.answers.indexOf(this._id),1)
+    question.answerCount=question.answerCount-1;
+    await question.save()
 
 })
 module.exports=mongoose.model("Answer",AnswerSchema)

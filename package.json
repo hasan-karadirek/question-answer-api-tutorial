@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "import": "node dummy-generator.js --import",
+    "delete":"node dummy-generator.js --delete"
   },
   "keywords": [
     "express"

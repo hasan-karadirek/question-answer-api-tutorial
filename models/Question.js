@@ -35,7 +35,16 @@ const QuestionSchema = new Schema({
         type:mongoose.Schema.ObjectId,
         ref:"Answer"
     }
-  ]
+  ],
+  likeCount:{
+    type:Number,
+    default:0
+
+  },
+  answerCount:{
+    type:Number,
+    default:0
+  }
 });
 QuestionSchema.pre('save', function (next) {
   if (!this.isModified('title')) {
