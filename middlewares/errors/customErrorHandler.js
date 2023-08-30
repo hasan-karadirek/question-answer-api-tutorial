@@ -1,26 +1,27 @@
 const CustomError = require('../../helpers/error/CustomError');
 
 const customErrorHandler = (err, req, res, next) => {
+  let customErr = err;
   if (err.name === 'ValidationError') {
-    customError = new CustomError(err.message, err.status);
+    customErr = new CustomError(err.message, err.status);
   }
   if (err.name === 'MongoServerError') {
     if (err.code === 11000) {
-      customError = new CustomError(
+      customErr = new CustomError(
         'Duplicate Key found: Please check your input',
         400
       );
     } else {
-      customError = new CustomError(err.message, err.status);
+      customErr = new CustomError(err.message, err.status);
     }
   }
   if (err.name === 'CastError') {
-    customError = new CustomError('Please provide a correct id!', 400);
+    customErr = new CustomError('Please provide a correct id!', 400);
   }
-
-  res.status(customError.status || 500).json({
+  console.error(customErr);
+  res.status(customErr.status || 500).json({
     success: false,
-    message: customError || 'Internal Server Error',
+    message: customErr.message || 'Internal Server Error',
   });
 };
 
