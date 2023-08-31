@@ -3,7 +3,7 @@ const connectDatabase = () => {
   mongoose
     .connect(process.env.MONGO_URI, {})
     .then(() => {
-      console.log('MangoDB Connection Successful');
+      return;
     })
     .catch(() => {
       console.error(err);
