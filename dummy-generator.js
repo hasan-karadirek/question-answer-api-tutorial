@@ -3,7 +3,6 @@ const Answer = require('./models/Answer');
 const User = require('./models/User');
 const fs = require('fs');
 const connectDatabase = require('./helpers/database/connectDatabase');
-const CustomError = require('./helpers/error/customError');
 
 const dotenv = require('dotenv');
 
