@@ -25,7 +25,7 @@ const questionQueryMiddleware = function (model, options) {
     const queryResults = await query;
     res.queryResults = {
       success: true,
-      count: paginationResults.total,
+      questionCount: paginationResults.total,
       pagination: pagination,
       data: queryResults,
     };

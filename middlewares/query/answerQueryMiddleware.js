@@ -20,7 +20,7 @@ const answerQueryMiddleware = function (model, options) {
     const queryResults = await query;
     res.queryResults = {
       success: true,
-      count: paginationResults.total,
+      answerCount: paginationResults.total,
       pagination: pagination,
       data: queryResults,
     };

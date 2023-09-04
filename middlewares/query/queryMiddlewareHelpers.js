@@ -34,8 +34,8 @@ const paginationHelper = async (model, query, req) => {
 
   const pagination = {};
   let total = 0;
-
-  if (model.collection.collectionName === 'answers') {
+  const modelName = model.collection.collectionName;
+  if (modelName === 'answers') {
     total = (await model.find().where({ question: req.params.id })).length;
   } else {
     total = await model.countDocuments(query.getQuery());
@@ -56,7 +56,7 @@ const paginationHelper = async (model, query, req) => {
 
   return {
     query:
-      model.collection.collectionName != 'answers'
+      modelName != 'answers'
         ? query.skip(startIndex).limit(limit)
         : query.find(
             { _id: req.params.id },
