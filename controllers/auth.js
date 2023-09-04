@@ -28,7 +28,7 @@ const register = asyncHandler(async (req, res, next) => {
     .json({
       success: true,
       access_token: token,
-      data: { user: user.name, email: user.email },
+      data: { username: user.name, email: user.email, userId: user.id },
     });
 });
 const getUser = (req, res, next) => {
@@ -52,7 +52,7 @@ const login = asyncHandler(async (req, res, next) => {
     .json({
       success: true,
       access_token: token,
-      data: { user: user.name, email: user.email },
+      data: { username: user.name, email: user.email, userId: user.id },
     });
 });
 
